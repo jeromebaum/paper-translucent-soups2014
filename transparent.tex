@@ -1,0 +1,892 @@
+
+
+%=======================================================================
+% TODO BEFORE DEADLINE
+%=======================================================================
+
+% ensure that the captions of the figures have adequate distance
+% abstract says we discuss tech challenges, but we don't --> add to doc
+
+% Decide on Google Surveys to run (1 voucher so far; how many vouchers?, prob 2?)
+
+% Fix up references (incl. finding the ones that are missing)
+
+% Finish related work section    % TAGS FOR LITERATURE SEARCH
+    % redressing, clickjacking
+
+% Add final numbers, rerun analysis
+
+%=======================================================================
+
+
+%=======================================================================
+% TODO BEFORE PUBLICATION
+%=======================================================================
+
+%CONTACT APPLE !!! --> product-security@apple.com   AFTER STUDY IS DONE
+% Anonimise data and attach
+% Check table formatting based on thesis pdf guideline for latex
+% knitr
+% find a quotation only once accepted!
+% Through the Frozen Glass (and What Alice Found There)?
+% double-check stats and possibly expand (power, type 1/2, etc, etc)
+% card sorting study? e.g. run around for 2 hours with a stack of cards?
+% look at google payout
+
+%=======================================================================
+
+
+\documentclass[twoside,letterpaper]{soups} 
+\input{preamble.tex}
+\begin{document}
+\title{Through the Frosted Glass:\\Security Problems in a Translucent UI}%Interfaces}
+%\title{Through the Frosted Glass\\(and What Security Problems We Found There)}
+\author{} %\input{authors.tex} %anonymous
+
+% Title initiall submitted:
+% Security Problems in Transparent Interfaces
+
+\maketitle
+
+\begin{abstract}
+Translucency is now a common design element in at least one popular mobile operating system. This raises security concerns as it can make it harder for users to correctly identify and interpret trusted interaction elements. In this paper, we demonstrate this security problem using the example of the Safari browser in the latest iOS version on Apple tablets and phones (iOS7), and discuss technical challenges of an attack as well as solutions to these challenges. We conclude with a survey-based user study, where we seek to quantify the security impact, and find that further investigation is warranted.
+\end{abstract}
+
+% Version initially submitted:
+% Transparency is now a common design element in at least one popular mobile operating system. This raises security concerns as it becomes hard for users to correctly identify trusted interaction elements. In this paper, we demonstrate this security problem using the example of the Safari browser in the current iOS version on Apple tablets, and discuss technical challenges of an attack as well as solutions to these challenges. We conclude with a survey-based user study to quantify the security impact.
+
+%\mbox{}\\\noindent\emph{quote} --- person
+
+%=======================================================================
+\section{Introduction}
+%=======================================================================
+
+% add references
+
+Graphic design has gone through many phases throughout history. Over the last century we have seen (among others) expressionism, avant garde, modernism, and post-modernism, followed by what could be called ``contemporary" design. User interface (UI) design can also be seen as consisting of several distinct visual styles over the field's history. Initially there were physical buttons and printers for output. This moved to terminals, where things went from command line, to single windows, to overlapping windows, and back to non-overlapping interfaces with new mobile interfaces. A distinct trend in recent years that can be observed is that of ``flat" design, whereby the fake shadows and crystal buttons of the Web 2.0 graphical movement have been replaced by something slimmed down, and less ``metaphoric". One place where this can be seen is in ``the great flattening" of the iOS7 interface from Apple.
+
+As graphical power has grown in recent years, Apple has added transparency effects to iOS7. This graphical power enabled, among others, the parallax effect and layered translucency. In the Safari iOS7 web browser this translucency is also implemented, as shown in Figure \ref{fig:example-transparency}.
+
+%use forward references from the narrative in the introduction.
+%The introduction (including the contributions) should survey the whole paper, and therefore forward reference %every important part.
+
+In this paper we present an attack that may enhance phishing attacks (Section \ref{chap:attack}), which is based on this transparency effect. We tested our attack using a crowdsourced experiment, and find that a larger study or an improved attack with larger effect is needed to find conclusive evidence of a threat (Section \ref{chap:evaluation}). Based on some further exploratory work we provide proposals for the design of trusted user interfaces (Section \ref{chap:solution}). Our contributions are:
+
+\begin{itemize}
+\item identifying the potential problems that underlay attacks can cause,
+\item evaluating the impact of such an attack in a major smartphone and tablet operating system,
+\item running a usable security study on multiple crowdsourcing platforms.
+\end{itemize}
+
+%Here is a problem
+%It's an interesting problem It's an unsolved problem Here is my idea
+%My idea works (details, data)
+%I wish I knew how to solve that!
+
+%I see how that works. Ingenious!
+%￼Here's how my idea compares to other people's approaches
+
+%1. Describe the problem
+%Use an example to introduce the problem
+%2. State your contributions
+
+% JB:
+% Put this into scope in the big picture?
+% e.g. click jacking and other UI security problems as more technical, this as more HCI
+
+% AR: not sure whether we should start with the whole context. i think we can put this in related work?
+
+% JB: idea here was to scope this and -- importantly -- establish relevancy/impact
+
+% JB: mention other places where there's translucent design?
+% Android, App-only: http://www.doubleencore.com/2013/11/expand-your-brand-with-translucent-system-ui/
+% Flash webcam dialog a bit: http://www.davidortinau.com/flash/WebcamCaptureDemo/WebcamCaptureDemo.html
+
+\begin{figure}\label{fig:attack-screenshot}
+\centering
+\frame{\includegraphics[width=\columnwidth]{survey-screenshots/gmail_montage_phishing_color}}
+\caption{Example of an underlay attack}
+\end{figure}
+
+\begin{figure}\label{fig:attack-screenshot2}
+\centering
+\frame{\includegraphics[width=\columnwidth]{assets/gmail_color_unscrolled}}
+\caption{The underlay attack exposed}
+\end{figure}
+
+\begin{figure}\label{fig:attack-layers}
+\centering
+\frame{\includegraphics[width=\columnwidth]{assets/layers.jpg}}
+\caption{Illustration of the attack idea}
+\end{figure}
+
+\begin{figure}
+\centering
+\frame{\includegraphics[width=\columnwidth]{assets/example-transparency/unscrolled}}
+\mbox{}
+\frame{\includegraphics[width=\columnwidth]{assets/example-transparency/scrolled}}
+\caption{Demonstration of transparency in iOS7}
+\label{fig:example-transparency}
+\end{figure}
+
+%=======================================================================
+\section{The Underlay Attack}\label{chap:attack}
+%=======================================================================
+
+Using the code in Figure \ref{fig:attack-code} we were able to create a proof of concept for the attack. The result is shown in Figure \ref{fig:proof-of-concept}. The code is specifically aimed at the iPad's landscape mode, and doesn't include a copy of a target website yet. For an actual attack, it would be trivial for the attacker to include the authentic website in an IFRAME, detect the orientation and respond dynamically, and integrate password capture mechanisms. Figure \ref{fig:attack-screenshot} shows an example of what a real attack could look like.
+
+% TODO This will only work with a literal cut-paste if we arrange the iframe stuff
+
+\begin{figure}
+\centering
+\frame{\includegraphics[width=\columnwidth]{assets/proof_of_concept}}
+\caption{Our proof of concept for the attack}
+% change the picture to proof of concept, with just top and a bit of website showing
+\label{fig:proof-of-concept}
+\end{figure}
+
+\begin{figure}\label{fig:attack-code}
+\begin{lstlisting}
+<style>
+.green {
+    width: 100%;
+    min-height: 200px;
+    background-color: #88ff00;
+}
+</style>
+...
+<div class="green">&nbsp;</div>
+<div id="high">
+    ...
+</div>
+<a name="login">&nbsp;</a>
+<script>
+document.getElementById('high').style.height = window.innerHeight - 45;
+var anchor = "#login";
+if (location.hash != anchor) {
+    location.href = location.pathname + anchor;
+}
+</script>
+\end{lstlisting}
+\caption[]{Attack code (CSS, HTML, JavaScript)}
+\end{figure}
+
+%The normal interface for non-SSL secured websites is shown in Figure \ref{fig:interface-normal}, the interface for SSL secured websites is shown in Figure \ref{fig:interface-ssl}, and the interface for Extended Validation SSL certificated is shown in Figure \ref{fig:interface-evssl}. Our attack is shown in Figure \ref{fig:interface-attack}.
+%fig:interface-attack  = fig:attack-screenshot ??
+%\begin{figure}\label{fig:interface-normal}
+%\begin{figure}\label{fig:interface-ssl}
+%\begin{figure}\label{fig:interface-evssl}
+%\begin{figure}\label{fig:interface-attack} --> not needed anymore --> takes too much space
+
+% --> create a small comparison diagram after deadline, e.g. see http://www.thawte.com/ssl/extended-validation-ssl-certificates/ for inspiration
+
+Given that the colour green is widely used in secure user interfaces we expected that this would cause more people to fall for phishing. If the user were to scroll up in the page then the green bar would become visible and the deceipt would be obvious. However there are technical ways to prevent this from happening. The details of such an implementation are a technicality and therefore we did not concern ourselves with this for the purpose of this study.
+
+% http://casual-effects.blogspot.de/2012/02/prevent-overscroll-on-ios-safari.html
+
+Translucency can be a visually appealing design element. However, this may come at the cost of decreased security. Yee \cite{yee2005guidelines} provides guidelines for secure user interaction design. The paper states, among other things that interfaces should represent objects and actions using unspoofable representations. When an attacker-controlled UI element is presented underneath a trustworthy but transparent element, this gives the attacker limited control over the trustworthy element. Yee also states that authority relationships that would affect security-relevant decisions should be easily reviewable in the interface. From controlling a trustworthy UI element it is not a long way to spoofing system security marks. Attacks always get better, they never get worse.
+
+Transparency is used throughout the user interface design in Apple's current iOS operating system for iPad tablets. The included web browser in iOS is Safari. One noteworthy instance of transparency design is the browser's address bar.
+
+Using colouring in the address bar is an emerging trend for indicating SSL certificate information and other security aspects of a connected website. As illustrated in Figure \ref{fig:attack-layers}, the colour of Safari's address bar depends in part on the colour of the web page loaded underneath. An attack is then straightforward: direct the browser to a page that automatically scrolls, such that a big green-coloured area is placed directly underneath the address bar.
+
+Besides trying to increase trustworthiness of the website though a coloured underlay, other avenues for attack may be possible, such as trying to make the URL harder to read by decreasing the contrast of the URL bar.
+
+
+\begin{figure}
+\centering
+{
+\begin{tabular}{rcc}
+  & \textbf{Bank of America} & \textbf{Google Mail} \\\\
+  & \emph{Authentic with EV-SSL} & \emph{Authentic with SSL}\\
+  & \emph{bankofamerica.com} & \emph{accounts.google.com}\\
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/bofa_montage_authentic}}
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/gmail_montage_authentic}}\\\\
+  & \emph{Fraud with green bar} & \emph{Fraud with green bar}\\
+  & \emph{bankofarnerica.com} & \emph{google-rnail.com}\\
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/bofa_montage_phishing_color}}
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/gmail_montage_phishing_color}}\\\\
+  & \emph{Fraud without green bar} & \emph{Fraud without green bar}\\
+  & \emph{bankofarnerica.com} & \emph{google-rnail.com}\\
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/bofa_montage_phishing_plain}}
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/gmail_montage_phishing_plain}}
+\end{tabular}
+}
+\caption{iPad screenshots used in the survey}
+\label{fig:survey-screenshots}
+\end{figure}
+
+%=======================================================================
+\section{Evaluation of Threat Level}\label{chap:evaluation}
+%=======================================================================
+
+% JB: don't the next few paragraphs go below the hypotheses/research question?
+
+Our research question was \emph{can subversion of the interface via translucent elements lead to negative security effects?} To test whether our attack presents a concrete threat we performed a study on two crowdsourcing platforms.
+
+We were interested in comparing the effectiveness of the phishing attacks. So we considered three hypotheses: For each two types of screenshots (authentic, green, plain) we tested whether one type is more trustworthy than the other, and did this for all combinations.
+
+\begin{description}
+\item[H1.] For a simple random sample, participants are likely to respond differently to a plain phishing attack site than to the original site. This hypothesis states the expectation that end-users can distinguish phishing sites from authentic sites if asked to. We use this hypothesis as motivation for the other hypotheses -- if a user cannot detect a phishing attack then improving upon the attack will not have a useful effect.
+\item[H2.] For a simple random sample, participants are likely to respond differently to a green-bar attack site than to a plain attack site. This hypothesis states that end-users are more likely to fall for the green-bar attack.
+\item[H3.] For a simple random sample, participants are likely to respond differently to a green-bar attack site than to the original site. This hypothesis states that end-users are still likely to detect green-bar attacks.
+\end{description}
+\newcommand{\hypothesis}[1]{\textbf{H#1}}
+
+Note that the hypotheses are two-tailed and we do not test for direction.
+
+% use command to refer to hypotheses e.g. This demonstrates how \hypothesis 5 relates to something.
+
+While creating the sample screenshots we determined the following control variables:
+
+\begin{itemize}
+\item URL (between phishing attacks)
+\item Page body
+\item System clock % we didn't control for this?
+\item Carrier
+\item Wi-Fi signal strength
+\item Battery level
+\end{itemize}
+
+To study the above hypotheses we made the following assumptions:
+
+\begin{itemize}
+\item We are able to select users at random from a general population.
+\item The decision whether a given user is willing to enter personal information on a given web page depends only on what is displayed, i.e. is a function of the screen.
+\item Users are able to accurately predict their decision for a given screen from only a screenshot.
+\end{itemize}
+
+We concluded from this that for a fixed web page, the decision for a randomly picked user whether or not to enter their personal information is distributed i.i.d. (independent and identically distributed) Bernoulli and is a function of the selected user.
+
+%-----------------------------------------------------------------------
+\subsection{Particpants}
+%-----------------------------------------------------------------------
+
+We recruited 3001 participants from Google's Customer Surveys platform, and 73 participants from CrowdFlower's platform. Each participant was paid depending on the platform. CrowdFlower workers were paid up to \$~0.20, and Google participants earned various benefits on the Google platform. % 'unique' participants
+
+For the CrowdFlower study participants were randomly split between 6 groups. Each group was shown one of the screenshots in Figure \ref{fig:survey-screenshots}, and participants were also presented with an anti-spam question. We also collected various background statistics about participants such as geo-location information.
+
+We ran the intitial study on CrowdFlower with the intention of having 600 participants. However, we had a very small number of respondents per hour. Then we ran the study on Google Consumer Surveys with 3000 participants. After the results were in we started further exploratory surveys to investigate effects that may have impacted the study. % for additional groups which are still ongoing of
+
+% Subsections?
+  % e.g. Population, Sample, Assignment, etc
+
+%-----------------------------------------------------------------------
+\subsection{Study design}
+%-----------------------------------------------------------------------
+
+% Maybe mention cost involved --> probably only for the final version if accepted
+% If we mention, then medium-term marginal cost (i.e. no vouchers or setup fees)
+
+%AR: Talk about appropriate designs for crowdsourced experiments.
+% Discuss the problem of non-naivite in crowdsourced people, state that we do not have a fix for this. Maybe we can search the crowdsourcing forums for indications that people are sharing info about the task? --> probably not before deadline, so move to fixing up period.
+
+We used two crowdsourcing platforms for this study: CrowdFlower and Google Consumer Surveys. As these platforms placed different restraints on the survey we had a different setup for each.
+
+% Geographical regions
+
+%On the CrowdFlower platform participants were paid up to \$~0.20 for their short participation.
+% duplicate $ 20 ?
+
+\subsubsection{CrowdFlower}
+
+The CrowdFlower screen contained the following description:
+\begin{quote}
+Image Categorization
+
+Let us know whether this website is safe based on the screenshot provided.
+
+Thank You! Your careful attention on this task is greatly appreciated!
+\end{quote}
+
+We showed the screenshot and asked the following question:
+
+\begin{quote}
+Is this website safe?
+\end{quote}
+% can we put a nice box around this?
+
+Available answers were ``Yes'' and ``No.'' In order to counter bias, we randomised the order of the answers through a JavaScript function in the CrowdFlower job.The CrowdFlower pa randomized the order of the answers to counter bias. % hmm we didn't really set the platform. they don't support this
+
+% how about: We set up the survey to randomize the ... (is another option)
+
+As alternatives for wording the question we considered among others:
+
+\begin{itemize}
+\item Do you trust this site?
+\item Would you login at this site?
+\end{itemize}
+
+However, each of these places inappropriate emphasis on aspects that are not related to connection security. For example, site trust would be significantly influenced by brand awareness. A user would also be more likely to respond positively to the login question if there is a prior relationship and the user has an account at that site with which to login.
+
+% Also note that the only way to find out is actually testing all questions, as it is not clear what they are asking.
+
+To filter out automated (bot) submissions and ensure a minimum level of participant attentiveness, we asked a trivial control question:
+
+\begin{quote}
+What day of the week is it?
+\end{quote}
+
+We validated the response against a list of reasonable strings. We did not deem it necessary verify that the system-recorded timestamp corresponded to the entered weekday.
+
+In addition to the questions that participants were asked to fill out, the CrowdFlower system automatically collected start/finish times for us. This allowed us to do a spot sanity check on time taken.
+
+The CrowdFlower system automatically prevents multiple submissions from a single participant under the configuration that we had set up. We were not able to filter out participants from previous trial runs so we simply discarded their entries using the unique identifier. % add something later about whether system actually does what it says
+
+% make complete background grey, also ensure that black boxes have space from the side
+\begin{figure}
+\centering
+\frame{\includegraphics[width=\columnwidth]{assets/survey_sample.png}}
+\caption{The CrowdFlower survey page with questions}
+\label{fig:survey_sample}
+\end{figure}
+
+\begin{figure}
+\centering
+\frame{\includegraphics[width=0.45\columnwidth]{assets/survey_google_closed.png}}
+\frame{\includegraphics[width=0.45\columnwidth]{assets/survey_google_opened.png}}
+\caption{The Google Consumers Survey}
+\label{fig:survey_google}
+\end{figure}
+
+%description for the crowdflower upload????
+
+\subsubsection{Google Consumer Surveys}
+
+For Google Consumer Surveys we adapted the CrowdFlower job, due to several technical and economic constraints. Google Consumer Surveys limited image size to 300 by 250 pixels. Hence we created iPhone screenshots instead of iPad screenshots and cut them off at the proportionate level. See figure \ref{fig:survey-screenshots-iphone} for these screenshots. Due to an oversight the question on the Google platform was ``Is this website secure?" instead of ``Is this website safe?".
+
+\begin{figure}
+\centering
+{
+\begin{tabular}{rcc}
+  & \textbf{Bank of America} & \textbf{Google Mail} \\\\
+  & \emph{Authentic with EV-SSL} & \emph{Authentic with SSL}\\
+  & \emph{bankofamerica.com} & \emph{accounts.google.com}\\
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/iphone/bofa_a}}
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/iphone/gmail_a}}\\\\
+  & \emph{Fraud with green bar} & \emph{Fraud with green bar}\\
+  & \emph{bankofarnerica.com} & \emph{google-rnail.com}\\
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/iphone/bofa_pc}}
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/iphone/gmail_pc}}\\\\
+  & \emph{Fraud without green bar} & \emph{Fraud without green bar}\\
+  & \emph{bankofarnerica.com} & \emph{google-rnail.com}\\
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/iphone/bofa_pp}}
+  & \frame{\includegraphics[width=0.2\textwidth]{survey-screenshots/iphone/gmail_pp}}
+\end{tabular}
+}
+\caption{iPhone screenshots used in the survey}
+\label{fig:survey-screenshots-iphone}
+\end{figure}
+
+Google Consumer Surveys also required significant extra payment per response to ask a second question (1000~\% over the price for one question). We thus did not include a bot control question and instead included an extra answer option: ``I'm not a human'' in the Yes/No question.
+
+Finally, Google Consumer Surveys did not allow for a survey title nor description.
+
+See the Section \ref{open_access} for more details about the materials used in this study.
+
+%------------------------------------------------------
+\subsection{Results}
+%------------------------------------------------------
+
+The data that we collected are summarised in Tables \ref{fig:results-google}, \ref{fig:results-google:proportions}, \ref{fig:results-cf:population}, and \ref{fig:results-cf:trusters}. We did not analyse the CrowdFlower data due to low volume. Note that we do not discuss the exploratory questions in this section, but that we will discuss these later.
+
+\begin{table*}[ht]
+\begin{center}
+\caption{Google Consumer Survey responses, per category}
+\mbox{}\\
+% TODO fix column spec, the quads might be in the wrong place, and there might be an incorrect no. of cols
+% btw the @{} are probably nulls i.e. can go
+\begin{tabular}{@{}l@{\quad}ll@{\quad}lllllll@{\quad}llllll@{\quad}llll@{}}
+\toprule
+                     & & & \multicolumn{4}{l}{B-of-A} & & & \multicolumn{4}{l}{Gmail} & & & \multicolumn{4}{l}{$\sum$} \\
+\midrule
+                     & & & Y    & N    & \eps& Pop & & & Y    & N    & \eps & Pop  & & & Y    & N    & \eps & Pop      \\
+\midrule
+Authentic            & & & 208  & 242  & 53  & 503 & & & 286  & 152  & 62   & 500  & & & 494  & 394  & 115  & 1003  \\
+Fraud with green bar & & & 151  & 301  & 49  & 501 & & & 191  & 242  & 63   & 496  & & & 342  & 543  & 112  & 997   \\
+Fraud with plain bar & & & 153  & 296  & 51  & 500 & & & 182  & 261  & 58   & 501  & & & 335  & 557  & 109  & 1001  \\
+$\sum$               & & & 512  & 839  & 153 & 1504& & & 659  & 655  & 183  & 1497 & & & 1171 & 1494  & 336  & 3001  \\
+\bottomrule
+\end{tabular}
+\label{fig:results-google}
+\end{center}
+\end{table*}
+
+%Site	Type		Google  Pop	    Google  Bots	Google Yes	(Google No)
+%BofA	Auth		503	    53	    208	242
+%BofA	Green		501	    49	    151	301
+%BofA	Plain		500	    51	    153	296
+%BofA	Total		1504	153	    512	839
+
+%Gmail	Auth		500	    62	    286	152
+%Gmail	Green		496	    63	    191	242
+%Gmail	Plain		501	    58	    182	261
+%Gmail	Total		1497	183	    659	655
+
+%Total	Auth		1003	115	    494	394
+%Total	Green		997	    112	    342	543
+%Total	Plain		1001	109	    335	557
+%Total	Total		3001	336	    1171	1494
+
+\begin{table}
+\centering
+\caption{Corrected sample proportions, per category}
+\mbox{}\\
+\begin{tabular}{|r|l|l|l|}
+\hline
+                     & B-of-A  & Gmail & Overall \\
+\hline
+Authentic            & 0.45    & 0.71  & 0.58    \\
+\hline
+Fraud with green bar & 0.29    & 0.42  & 0.35    \\
+\hline
+Fraud with plain bar & 0.29    & 0.38  & 0.34    \\
+\hline
+Overall              & 0.34    & 0.50  & 0.42    \\
+\hline
+\end{tabular}
+\label{fig:results-google:proportions}
+\end{table}
+
+\begin{table}
+\centering
+\caption{Sample population, per category}
+\mbox{}\\
+\begin{tabular}{|r|l|l|l|}
+\hline
+\emph{CrowdFlower}   & B-of-A   & Google Mail   & $\sum$ \\
+\hline
+Authentic            & 9        & 10            & 19 \\
+\hline
+Fraud with green bar & 18       & 13            & 31 \\
+\hline
+Fraud with plain bar & 7        & 16            & 23 \\
+\hline
+$\sum$               & 34       & 39            & 73 \\
+\hline
+\end{tabular}
+\label{fig:results-cf:population}
+\end{table}
+
+\begin{table}
+\centering
+\caption{Response of ``secure'', per category}
+\mbox{}\\
+\begin{tabular}{|r|l|l|l|}
+\hline
+\emph{CrowdFlower}   & B-of-A   & Google Mail   & $\sum$ \\
+\hline
+Authentic            & 7        & 9             & 16 \\
+\hline
+Fraud with green bar & 11       & 7             & 18 \\
+\hline
+Fraud with plain bar & 7        & 14            & 21 \\
+\hline
+$\sum$               & 25       & 30            & 55 \\
+\hline
+\end{tabular}
+\label{fig:results-cf:trusters}
+\end{table}
+
+% add table here making comparisons easier? i.e. show corrected_yes / corrected total
+% JB: still relevant given our tables?
+
+We tested the null hypotheses that there is pairwise no difference in trustworthiness. To do this we totalled the data over the sites Google Mail and Bank of America. We then ran Fisher's exact test and applied a Bonferri correction (factor 3) to account for family-wise error. The two-tailed p-values are summarized in Table \ref{fig:results:pvalues}.
+
+By making additional assumptions on the Google Consumer Survey responses we were able to apply a correction to account for the bot responses. Specifically we assumed that bots (and unattentive human participants) chose at random between the possibilities. That is, bot responses are distributed i.i.d. $\mathcal U\{Y,N,\varepsilon\}$ where $\mathcal U$ is the uniform distribution.
+
+% maybe add something about the noise floor not being clear, i.e. we don't know if spammers and non-serious people click on one thing more than others. however, the problem should be reduced because we randomised order of questions.
+% JB: don't get this? as long as they don't click depending on what the answer says (e.g. more heavily towards the longer text or something) then the assumption works. it only breaks if they actually consider the answer text (even subconsciously).
+
+Under these assumptions the best estimate for the human responses when we measured $(Y,N,\varepsilon)$ was:
+
+\[ (\hat Y',\hat N')=(Y-\varepsilon,N-\varepsilon) \]
+
+So we subtracted the ``I'm not a human'' response count from the ``Yes'' count and its triple from the sample population prior to summing across the sites and running the statistical tests.
+
+\begin{table}
+\centering
+\caption{Corrected two-tailed p-values, by pair}
+\mbox{}\\
+\begin{tabular}{|r|l|l|l|}
+\hline
+                    & Green     & Authentic             & Authentic \\
+                    & versus    & versus                & versus    \\
+                    & Plain     & Green                 & Plain     \\
+\hline
+p-value             & 0.64    & $<10^{-15}$ & $<10^{-15}$ \\
+\hline
+Corrected           & $\ge 1$   & $<10^{-14}$ & $<10^{-14}$ \\
+\hline
+\end{tabular}
+\label{fig:results:pvalues}
+\end{table}
+
+For a descriptive view of the data, we computed the confidence intervals at $\alpha = 0.05$ and $\alpha = 0.01$ for the sample proportion per type. We used the normal approximation which was appropriate because $Y, N \gg 5$ in all cases. These intervals as well as the observed sample proportions are shown in Figure \ref{fig:results:cintervals}.
+
+\begin{table}
+\centering
+\caption{Confidence intervals, by type}
+\mbox{}\\
+\begin{tabular}{|r|l|l|l|l|l|}
+\hline
+            & $u(X)$    & $u(X)$    & $\hat{p}$ & $v(X)$    & $v(X)$ \\
+$\alpha$    & 0.01      & 0.05      &           & 0.05      & 0.01 \\
+\hline
+Authentic   & 0.51      & 0.54      & 0.58      & 0.61      & 0.63 \\
+\hline
+Green       & 0.30      & 0.31      & 0.35      & 0.38      & 0.40 \\
+\hline
+Plain       & 0.29      & 0.30      & 0.34      & 0.37      & 0.38 \\
+\hline
+\end{tabular}
+\label{fig:results:cintervals}
+\end{table}
+
+We also calculated effect size in the form of a pairwise odds ratio. This is shown in Figure \ref{fig:results:oddsratios}.
+
+\begin{table}
+\centering
+\caption{Odds ratio, by pair}
+\mbox{}\\
+\begin{tabular}{|r|l|l|}
+\hline
+            & Green             & Plain \\
+\hline
+Authentic   & 2.54              & 2.69 \\
+\hline
+Green       & \cellcolor{gray}  & 1.06 \\
+\hline
+\end{tabular}
+\label{fig:results:oddsratios}
+\end{table}
+
+% lower bound, upper bound, i.e. confidence interval
+% sample proportion
+% p proportion
+% hat is maximum likelihood
+
+%------------------------------------
+%\subsubsection{Background statistics}
+%------------------------------------
+
+%We collected the following background statistics on participants using the CrowdFlower system:
+
+%\begin{itemize}
+%\item IP address
+%\item Location
+%\item Browser agent
+%\end{itemize}
+
+%For participants using the Google Consumer Surveys system, the location and various inferred/estimated statistics were available to us, namely:
+
+%\begin{itemize}
+%\item x
+%\end{itemize}
+
+%----------------------
+\section{Discussion of Threat Level}
+%----------------------
+
+% Maybe add some text here if time.
+
+\subsection{Hypothesis Tests}
+
+The survey data support \hypothesis 1 with statistical significance. We can then conclude that end-users can in fact detect phishing when they are asked about site security. The study of more effective phishing attacks is therefore motivated.
+We were also able to confirm \hypothesis 3 which states that end-users can still detect the underlay green-bar phishing attack. % roughly
+While we did not test direction in the statistical tests the sample proportions and confidence intervals clearly show the direction of the effects.
+
+Unfortunately we were not able to confirm \hypothesis 2 so it is not clear that our attack in this variant was effective. A larger sample size and/or an improved attack with larger effect size would be necessary to confirm this. The sample odds ratio was only 1.06 (with a 95~\% confidence interval of 0.84 to 1.34) so the attack does not appear to be a significant improvement in this variant.
+
+Our results warrant further investigation. We have started several exploratory studies to quantitatively measure the effect of the many aspects in which the attack can be varied. Section \ref{sect:exploratory} goes into more detail of preliminary findings of these investigations.
+
+\subsection{Interpretation of Results}
+
+We suspect that in the context of the survey the green colouring may have drawn the participant's attention to the URL. Participants may have interpreted the green colouring as a highlight or emphasis, which may have pointed them to the URL bar as an area to pay attention to and base their decision on. We may thus have caused participants to read the URL, when they normally would not have done so even in the plain phishing screenshot. This would seem unlikely to happen during typical web browsing.
+
+%Another possible cause of such a small effect size could be that [people don't look].
+
+Previous studies by other authors have shown that end-users tend not to look at the address bar to verify that they are browsing a trusted website \cite{emperor}. Then the purpose of testing an alternative presentation might be unclear. However instead of simply subverting the original indicator we are in fact attempting to create a false indicator that could hint that the website in question is safe. While the end-user might not consciously recognize the indicator there is a chance that the user subconsciously responds to it.
+
+One way to explain our results is that the human mind functions as a prediction engine. It might be that users have certain expectations, and if something is suddenly there that wasn't there before,  or if it doesn't serve as an affirmative signal, it will serve as an attention trigger. This indicates that salience of trust indicators may play a role, i.e. only those that are actually seen by the user will be considered. For phishers this indicates that they shouldn't draw attention if they don't have to, and for engineers of browsers that they should do more to make security (and insecurity) indicators more salient. These and various improvements to our attack are possible, and we discuss possible future work in Section \ref{chap:conclusion}. % maybe not add new stuff in conclusion
+
+Note that in our survey we overlooked some variables before running the study such as the lock icon to indicate a secured connection. This may have adversely affected our results. In the future a different methodology might be appropriate such as comparing the screenshots using an ``image diff'' software to verify that no variables are overlooked.
+
+\subsection{Exploratory Investigations} \label{sect:exploratory}
+
+After the primary study we ran several short runs of adapted interfaces. This exploratory investigation looked at the effect of the question we asked as well as several factors on the authentic screenshots. We performed the following short surveys:
+
+\begin{description}
+
+\item[``Safe'']
+We tested the green and plain attacks but asked ``Is this website safe?'' This was to explore the effect of a slightly different question.
+
+\item[Mismatching EV]
+We presented a screenshot with the Bank of America EV but the Google Mail content to test whether users actually read the EV information or only notice whether an EV is displayed. The screenshot we used is shown in Figure \ref{fig:variant:wrong_ev}.
+
+\item[Authentic without lock]
+We showed the authentic screenshot but without lock. This tests the effect of the padlock icon. The screenshot can be seen in Figure \ref{fig:variant:authentic}.
+
+\item[Authentic with green bar]
+Similar to the underlay green-bar attack we presented the authentic site with a green address bar. This was to complement our original survey results. This screenshot is also included in Figure \ref{fig:variant:authentic}.
+
+\end{description}
+
+The survey results are shown in Table \ref{fig:results:explorative}.
+
+Varying the question did not appear to have any effect. We observed sample proportions of 0.40 vs. 0.42 (odds ratio: 1.09) and 0.36 vs. 0.38 (OR: 1.09).
+
+The mismatching EV on Google Mail appears to be noticeable enough (0.52 vs. 0.71, OR: 2.26). However it performs better than the green attack (0.42, OR: 1.50) and better than the plain attack (0.38, OR: 1.77). Interestingly the mismatching EV appears to perform better than the authentic Bank of America screenshot at 0.45 (OR: 1.32).
+
+Of note, the green variant of the authentic Gmail website appears to perform worse than the original authentic screenshot (0.61 vs. 0.71, OR: 1.57). We suspect that this may be due to users recalling the look of the original authentic site on their own devices and noticing that it does not look the the same. The typical security indicators are present but this might not be enough to sway the user after they have noticed the difference.
+
+Removing the lock from the authentic screenshot appears to have a great effect on user response. Without a padlock icon the screenshot performs at 0.48 compared to the original 0.71 (OR: 2.65).
+
+\begin{figure}
+\centering
+\frame{\includegraphics[width=0.45\columnwidth]{survey-screenshots/variants/wrong_ev}}
+\caption{Mismatching EV screenshot}
+\label{fig:variant:wrong_ev}
+\end{figure}
+
+\begin{figure}
+\centering
+\frame{\includegraphics[width=0.45\columnwidth]{survey-screenshots/variants/authentic_green}}
+\frame{\includegraphics[width=0.45\columnwidth]{survey-screenshots/variants/authentic_nolock}}
+\caption{Variants of the authentic screenshot}
+\label{fig:variant:authentic}
+\end{figure}
+
+\begin{table}
+\centering
+\caption{Results of the explorative surveys}
+\mbox{}\\
+\begin{tabular}{|r|l|l|l|l|l|l|}
+\hline
+                        & Y     & N     & \eps  & $\hat Y'$ & $\hat N'$ & $\hat p$ \\
+\hline
+Mismatching EV          & 83    & 79    & 25    & 58        & 54        & 0.52 \\
+\hline
+``Safe'' green          & 65    & 97    & 17    & 48        & 72        & 0.40 \\
+\hline
+``Safe'' plain          & 72    & 108   & 21    & 51        & 87        & 0.36 \\
+\hline
+Authentic green         & 86    & 66    & 32    & 54        & 34        & 0.61 \\
+\hline
+Authentic w/out lock    & 81    & 85    & 28    & 53        & 57        & 0.48 \\
+\hline
+\end{tabular}
+\label{fig:results:explorative}
+\end{table}
+
+%------------------------------------------------------
+\subsection{Limitations}
+%------------------------------------------------------
+
+Throughout the survey design and execution we encountered limitations both inherent in the survey method and induced by the specific crowd-sourcing platform that we used. Below we provide further details about these limitations.
+
+Other researchers are encouraged to verify, as there are likely various hidden biases present in the study. We lower the barrier to others to verify our findings in different settings and using different methods as all our materials are made available under open access. We agree that there are still no widely agreed-upon standards for sharing study designs, so the study will need to be ported to the specific platform on which it is run.
+
+%RE indicators: There is also some confusion about not noticing and not knowing how to interpret.
+
+%Known unknown and unknown unknown
+%Hidden biases
+%Need to rerunning studies
+
+%phishers targeting economies of scale
+%--> trying with very simple phishing emails with a large number of people
+
+% GENERAL OVERVIEW OF SPECIFIC PROBLEMS IN SUBSECTIONS
+
+% Discuss methodological issues with respect to information security?
+
+%TALK ABOUT DIFFERENCE IN QUESTIONS?
+
+%talk about the (ethical) issue of testing/verifying your own work, and stress that it is important for others to repeat the experiment.
+
+%Emphasise that we should be doing more repetition of existing studies in different scenarios, with different setups. If there is not incentive then maybe people should be doing more repetition themselves / multi channel studies.
+
+%Multi-method studies
+
+%Don't put eggs in one basket
+%For crowdsourcing people: go out into the world, and prevent a crowdsourcing monoculture
+
+%Below we provide further details about ...
+%As there are likely to be hidden sources of bias we encourage other researchers to repeat our experiment to verify the findings.
+
+\subsubsection{Representativeness of Materials}
+
+An important aspect is the question of how representative the materials are. This is often a tougher question than sample representativeness, especially when only investigating the difference between treatments. For example: We haven't looked a safari's private browsing mode, which uses something like darkened glass effect. Additionally, we've looked at something like frosted glass, and it could be that there are interfaces that are much more transparent.
+
+%------------------------------------
+\subsubsection{Concerns around Quality of Responses}
+%------------------------------------
+
+We tried to keep the survey short and quick to complete for participants. Having only a single real question and a trivial bot control question does not necessarily ensure a high level of attentiveness. However, note that for investigations into phishing the application of an attentiveness check to filter participants is likely to filter out those that are more likely to fall for phishing.
+
+Google Consumer Surveys showed a non-negligible level of responses with ``I'm not a human.'' We were not able to determine whether this was due to bot submissions or lack of attentiveness. The problem of distinguishing bots from non-attentive humans is a general problem in crowdsourced research. For future work we intend to run lab studies alongside crowdsourced studies. Due to an increased noise floor, there is a need to scale up the number of respondents in crowdsourced studies. In addition there is also the requirement to scale sideways: to run studies on multiple platforms, and preferably to run studies both on- and offline.
+
+With only a Boolean yes/no response it is hard to tell whether people have correctly interpreted the question. The satisfaction survey suggests that the instructions were considered clear by participants. However, it is doubtful that a misunderstanding would be detected by enough participants. Note that the answers in the bot question on CrowdFlower indicate that the participants there read the questions, but that this does not say anything about the clarity and interpretation of the question about website trustworthiness. In future work a sanity check in the form of a dedicated attention-check question is appropriate on the Google Consumer Surveys platform. Additionally, open-ended answers asking how a question is interpreted are appropriate.
+
+%Need unique IDs for different crowdsourcing accounts? Probably still would not work. Just need to live with it.
+%Were not able to exclude people answering both cf and google, people hiding identity
+%However, done on both platforms, not likely that a large portion of people are on both
+
+%------------------------------------
+%\subsubsection{Participant Attentiveness}
+%------------------------------------
+
+% AR: From first version of paper. Something about attention check: The problem with attention checks is that we bias our population due to only testing on people who have been checked to be attentive. Furthermore, even if we include all participants, we cannot check the difference between attention deficit due to natural effects (effects to be expected online in the general context of online web browsing) and due to watching the superbowl and making money while doing simple tasks.
+% JB: this is from another paper!
+
+%------------------------------------
+%\subsubsection{Participant Understanding}
+%------------------------------------
+
+
+
+%------------------------------------
+%\subsubsection{Bot Submissions}
+%------------------------------------
+
+Unfortunately it is a common technique on some crowd-sourcing sites to perform automated submissions for personal gain. This leaves survey authors with invalid or useless submissions. To counter this we implemented a bot check. Unfortunately this bot check can filter out real participants if they are not attentive enough or simply by chance due to mismatching answer formats.
+
+Google Consumer Surveys did not allow us to ask a bot control question as described earlier.
+
+%------------------------------------
+\subsubsection{Concerns around Technology}
+%------------------------------------
+
+CrowdFlower doesn't directly support surveys split into groups or with randomised answer ordering. We had to implement this using client-side JavaScript code. Then for choosing a random screenshot to show to the participant we had to rely on the browser's built-in random number generator. This may have impacted on random assignment into groups. % is this questionable for sampling?
+Additionally, CrowdFlower didn't allow us to prevent duplicates across test runs vs. actual runs and this means we had to take out around a fifth of the final data.
+Lastly, as shown by Renkema et al \cite{renkema2014buildling}, we cannot be sure that CrowdFlower is running their infrastructure properly (or any other crowdsourcing provider for that matter).
+
+Google's platform did not allow us to start several surveys simultaneously and did not allow random assignment within a survey. % was 'sub-samplicing within a survey
+In part this was due to an intransparent survey review process that introduced delay between the time of survey scheduling and the actual starting time. As time of day among other things can affect the participants' attentiveness this may have unnecessarily biased some groups and affected the outcome. Another possible source of bias is adaptive targeting (whereby Google Consumer Surveys appears to have directed the surveys towards different audiences), which likely introduced further unknown bias. % we can see that on the bottom
+
+Generally, the crowdsourcing platforms are very opague. The review process for Google Consumer Surveys was also intransparent with respect to which surveys they allowed and which they didn't. In one instance the exact same survey with a slightly adapted image was rejected even though ten other similar surveys were accepted. After making a change with no effect and resubmitting the survey it was accepted.
+
+%\subsection{Lessons Learned}
+
+%more repetition
+
+%running on multiple platforms
+
+%maybe merge with limitations subsection?
+
+%apply the 4 eyes principle to online studies
+%since they have so many things to configure
+
+%when possible copy surveys instead of recreating (when you have multiple variations to run), reduces chance of error.
+
+% JB: working remotely, if there are multiple versions of a survey then make sure the final one is unique or there is some other way to make sure you are looking at the right version. (in case we need more lessons learned, frankly this is obvious)
+
+% Google seems sensitive to the time (time of day, weekday) that we submit the survey. Looks like response rate affects how quickly the survey is completed.
+
+%------------------------------------------------------
+\subsection{Ethics}
+%------------------------------------------------------
+
+During the data collection various demographics were automatically included by Google. For CrowdFlower we enabled the option of saving the browser agent identifier as well as the IP address. We chose to save these to enable checking of double submissions. For opening of the data (see Section \ref{open_access}) we have opted to remove the IP addresses and to anonymise the user IDs for both platforms. We expect the participant terms of use of these crowdsourcing platforms to account for this.
+
+There was no informed consent from the participants. However, we assumed implicit consent for non-harmful tasks, given that the participants working on a crowdsourcing platform. Our surveys did not provide a debrief informing the participants of the purpose of the study, and as such participants were not made aware of deception. This was largely due to technical limitations in the platforms available to us, as well as the nature of crowdsourcing. Given the nature of crowdsourcing, participants are not likely to read any debrief text.
+
+We think that there is no likely harm from participating in the study, and it might even help people in becoming slightly more aware of web security. Also, participants in the CrowdFlower platform were able to take part in a satisfaction survey to rate their experience with the original survey. We do not have access to the raw survey data but the summary statistics show a satisfaction level of at least 4 out of 5 in the categories ``Overall'', ``Instructions Clear'', ``Ease Of Job'' and ``Pay.''
+
+% Need to transform the UserID based on a keyed hash where we throw away the key. Also for IP address from crowdflower. This destroys some information, but allows us to preserve privacy.
+
+%It also destroys subnet info for close duplicates but whatever. Might mention this? % feel free to delete if not something to mention
+
+%Indeed, this is precisely the issue we had in the alt.chi study as well ;)
+
+% Talk about ethical issues regarding sharing these data with the academic community.
+
+% JB: does fair pay go here? Is this something to discuss at all? --> we can add, but not sure it adds much. let's think about for later versions, e.g. balancing of how prone it is to phishing versus how well people are paid, etc
+
+%=======================================================================
+\section{Proposed Solution}\label{chap:solution}
+%=======================================================================
+
+% Phrase in such a way that we can do responsible disclosure before publication? Still responsible then?
+
+In the interest of responsible disclosure we make Apple aware of the problem after we carried out the user study and before publication, and recommend them to remove transparency in iOS7 Safari. While this will take away some of the ``eye candy" of the interface, it will ensure that the attack presented in this paper is no longer possible. Alternatively, on first displaying a new page, the URL bar could be made opaque and only becoming transparent after some time. This would not provide complete protection, but it could provide an acceptable compromise between seduction and security.
+
+Additionally we encourage all browser vendors, for both desktop and mobile web browsers, to come together and agree on common standards for displaying trust indicators. Standards for secure interfaces are sorely lacking. We expect that one factor that contributes to the difficulty of distinguishing a fake from a genuine trust indicator is the current wide variety of trust signals. % Figure X shows the variety of trust indicators in current popular browsers.
+
+%=======================================================================
+\section{Related Work}
+%=======================================================================
+
+Security systems are known to fail due to human factors \cite{fail}. This is the same for phishing \cite{Dhamija:2006:WPW:1124772.1124861}, and this is what our attack builds on. We have presented a hybrid attack that combines both technical shortcomings with limitations in human capabilities.
+
+As mentioned by Yee \cite{yee2005guidelines}, user interface elements should not provide control to an attacker. The attack that we have discovered does just this: we achieve limited control of the user interface to influence the way that trust indicators are displayed. What is enabled by our approach is twofold: spoofing security indicators, and making insecurity indicators harder to perceive. Following an econometric analysis, Herley \cite{externalities} suggests that users don't check security indicators because the real costs are greater than possibly damages. While users would be unlikely to make such extensive calculations, we can safely assume that they make some cost-benefit analysis when exposed to various technologies. We use this propensity in our attack scenario, by seeking to make checking of security indicators as difficult as possible.
+
+Conti et al \cite{overload} describe attacks against security systems based on visual overload, and also describe the need for countermeasures against malicious interfaces \cite{conti2010malicious}. The literature describes various malicous interface methods that go in a similar direction to ours. Related attacks are clickjacking \cite{huang2012clickjacking}, UI redressing, and mousejacking.
+
+An attack that also depends on relocation of the page is the URL spoofing attack from Dhanjani \cite{iphone}. Instead of trying to change the authentic URL, Dhanjani creates a visually identical copy of the URL bar in the iPhone interface. Gabrilovich and Gontmakher \cite{gabrilovich2002homograph} describe a way of spoofing characters using look-alike glyphs from the Unicode character set. Krammer \cite{Krammer:2006:PDA:1501434.1501473} describes a possible countermeasure for this based on highlighting. In transluscent interfaces such highlighting might be circumvented using the underlay attack that we have presented.
+
+Lin et al \cite{lin2007} have described URL highlighting as a mechanism that has a protective effect in certain cases. Again, our technique might be able to reduce it's effectiveness when transparent interfaces are present. Another countermeasures that depends on visualisation are visual fingerprints \cite{dhamija2005battle} based on hash visualisation \cite{visualisation}, which is also possible circumvented by our underlay attack.
+
+Attacks such as those presented here illustrate the need for trusted windowing systems such as EROS by Shapiro et al \cite{shapiro2004design}. However, this is not likely to happen in the near future. Others have shown the sorry state of security indicators and security warnings on the web. Stebila \cite{misuse} found many websites abusing trust indicators. Schechter et al \cite{emperor} found that security indicators were generally ineffective. Jakobsson \cite{indicators} found that padlock indicators had little effect on trust. Amrutkar et al \cite{amrutkar2012measuring} performed a usability analysis of indicators in web browsers, and found them severly lacking. % add STRINT workshop reference later
+
+%Egelman et al \cite{warnings} show the importance of active warnings and indicators to prevent phishing attacks. Akhawe and Felt \cite{akhawe2013alice} performed an in situ experiment to evaluate the effect of warnings in Chrome and Firefox, and found that they did have an effect on end-user behaviour.
+
+%Representative attacks that provide a view of concrete problems that exist are X's iPhone URL bar spoofing \cite{iphone}, Y's URL homograph attack \cite{gabrilovich2002homograph}, and Abu-Nimeh and Nair's bypassing of phishing filters using DNS poisoning \cite{dns}, and Tsow's malicious home router phishing attack \cite{router}.
+
+%http://research.microsoft.com/pubs/73101/guilogicsecurity.pdf
+%http://www.w3.org/Security/wiki/Clickjacking_Threats
+%http://srl.cs.jhu.edu/pubs/SRL2003-05.pdf
+
+%=======================================================================
+\section{Conclusion}\label{chap:conclusion}
+%=======================================================================
+
+We have highlighted the danger of transparency in user interfaces, and have presented an attack on iOS7 Safari. We have conducted an evaluation of the attack on a crowdsourcing platform, and we found that further investigation is needed.
+
+Various avenues for future work are open:
+\begin{itemize}
+\item Testing which colour works best. An attacker could do this adaptively using, for example, A/B testing \cite{kohavi2009controlled} or Bandit based methods \cite{white2012bandit}.
+\item Testing phishing URLs by running them through a crowdsourcing survey platform.
+\item Testing phishing email content using crowdsourcing.
+\item Investigating whether the ideal colour is site-specific.
+\item Investigating the possibility of defeating the blurring mask to present security indicators.
+\item Making phishing URL harder to distinguish, e.g by camouflaging the misspellings using reduced contrast, distracting patterns or by derailing attention towards less suspicious UI elements
+% ^^^ same as vvv ???
+%\item Building a perceptive model and investigating further attack possibilities specific to the blurring filter used.
+\end{itemize}
+
+Through these avenues we can explore opportunities for user confusion. Bravo-Lillo et al \cite{{Bravo-Lillo:2013:YAP:2501604.2501610}} have advocated the design of ``attractors" in order to direct the user's attention towards relevant aspects of security warnings. We propose further research into the design of ``distractors" that can hinder users in interpreting security indicators.
+
+%\item Desensitising people by having the URL bar be red all the time?
+
+
+
+% Maybe move to future work? The study of security indicators
+% * Do people actually look at indicators?
+% * Is it important that they look at indicators?
+% * Do people understand when they actually look at indicators?
+% * Do they take action when they can understand what the indicator means?
+% * Can they take action?
+
+% analysis via proxy, e.g. exploit cost, how detected phishing messages look like
+
+% How secure an individual indicator is does not present a promising question for transferable knowledge to other indicators. A more general framework of techniques to create secure indicators appears to be a more fruitful research area.
+
+%=======================================================================
+\section{Open Access}\label{open_access}
+%=======================================================================
+
+% TODO
+
+\emph{Note to reviewers: The data will be added in the conference version due to anonymity issues around file authorship.}
+
+%In the interest of open science we're opening up our materials. The materials and primary data of the study are integrated into the PDF version of this paper. Adobe Acrobat Reader and other supported readers can extract the attachments, as well as tools such as pdftk. %\textattachfile[color=0 0 0.5]{renkema2014security.zip}{[materials]}
+
+% note: we're not opening up everything we write down, opening up our lab notebook. this if for the next publication.
+
+%\nocite{*}
+
+\bibliographystyle{IEEEtran}
+%\bibliography{IEEEabrv,references}
+\bibliography{references}
+\end{document}

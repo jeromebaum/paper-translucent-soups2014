@@ -1,0 +1,318 @@
+  % Deleted all stuff. To add anything that seems relevant from other paper.
+  % Check CCS publication on Android SSL problem, and look if paper structure can be adapted.
+  % Check https://groups.google.com/forum/#!topic/augmented-programming/aMvKerQ1iww
+  % http://c2.com/cgi/wiki?CapabilityUserInterface
+  % http://srl.cs.jhu.edu/pubs/SRL2003-05.pdf
+  
+  % http://www.w3.org/Security/wiki/Clickjacking_Threats
+  
+  % find references
+    % for referencing secure interaction design rules about how interfaces should be non-spoofable
+      % \cite{yee2002user} : orginal publication: http://zesty.ca/pubs/csd-02-1184.pdf
+      % \cite{yee2005guidelines}: http://sid.toolness.org/ch13yee.pdf
+    % Fisher's exact test
+
+  % check these papers
+    % http://www.cse.msu.edu/~enbody/crosstalk_aks_rje_browser_ui_design_flaws.pdf
+    % original: http://www.crosstalkonline.org/storage/issue-archives/2011/201105/201105-Sood.pdf
+    % http://research.microsoft.com/pubs/73101/guilogicsecurity.pdf
+    % general browser code problems: http://www.iitg.ernet.in/stud/drbj153/WebBrowser%20Vulnerability.pdf
+    % problem with inconsistent user interfaces: https://freedom-to-tinker.com/blog/sjs/web-browser-security-user-interfaces-hard-get-right-and-increasingly-inconsistent/
+    % flaws outside of the ui: http://cups.cs.cmu.edu/soups/2008/proceedings/p117Falk.pdf
+    % secure browser design: http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.210.2764&rep=rep1&type=pdf
+    % general browser security + some UI stuff: https://www.troopers.de/wp-content/uploads/2012/10/TROOPERS09_sood_browser_design_flaws.pdf
+
+%FORWARD BACKWARD SEARCH???
+
+% TALK ABOUT HOW OUR ATTACK COMPARES WITH OTHER ATTACKS
+% ONLY SHORTLY MENTION POSSIBLE COUNTERMEASURES?, PLUS WHY THEY MIGHT (NOT) FAIL?
+
+%Supposed to make that area darker and due to contrast less readable. IMO it
+%> is possible to expand on this as necessary.
+%> 
+%> [image: Inline image 1]
+%> 
+%Funnily enough as i'm working on related work I was also thinking about the relation of our work to not just making things more trustworthy but hiding non-trustworthy things. This has been done with hiding the whole URL bar, but is interesting as future work when applied in our situation
+
+%Do we also want to test this? Mention of it should certainly go into the paper :)
+
+%Yee \cite{yee2005guidelines} specified a collection of secure interface design guidelines. X
+
+%Related attacks are clickjacking, UI redressing, mousejacking, ... (REFS). Correspondingly, our attack could be called ``address bar jacking"
+
+% JB: maybe just call it that instead of saying what it could be called?
+
+% green barring
+% sLayers
+% dragon layers
+% TSL (translucent security layer) attack
+
+% apparently original paper: http://www.sectheory.com/clickjacking.htm
+
+% https://media.blackhat.com/ad-12/Niemietz/bh-ad-12-androidmarcus_niemietz-WP.pdf
+% http://ui-redressing.mniemietz.de/
+
+%It has also been suggested, following an econometric analysis, that users do not check security indicators because doing so would cost them more in terms of time than the likely economic damage [ref]. That users would make such detailed calculations is rather unbelievable, although it seems safe to assume that users do make some kind of cost-benefit analysis when dealing with any form of technology.
+
+% Maybe say: "That users would make such detailed calculations can be called into question, although it seems safe ..."
+% (You could argue that light cost-benefit analysis would in expectation give the same results as a detailed analysis and there's other possible arguments for the original statement. So this probably isn't the best place to open up that discussion.)
+
+%Representative attacks that provide a view of concrete problems that exist are X's iPhone URL bar spoofing \cite{iphone}, Y's URL homograph attack \cite{gabrilovich2002homograph}, and Abu-Nimeh and Nair's bypassing of phishing filters using DNS poisoning \cite{dns}, and Tsow's malicious home router phishing attack \cite{router}.
+
+
+%Representative attacks that provide a view of concrete problems that exist are X's iPhone URL bar spoofing \cite{iphone}, Y's URL homograph attack \cite{gabrilovich2002homograph}, and Abu-Nimeh and Nair's bypassing of phishing filters using DNS poisoning \cite{dns}, and Tsow's malicious home router phishing attack \cite{router}.
+
+%Interesting work has also been done that looked at specific countermeasures are easier visual representations, the creation of trusted paths (?), and implementing a trusted. %Krammer's proposed fix \cite{Krammer:2006:PDA:1501434.1501473} for the homograph attack
+
+%network filtering, e.g. HTTP response forms \cite{export}
+
+%Effectivenss of anti-phishing techniques \cite{detect}
+
+%Specialist interfaces, such as a ``protected links toolbar" linked to a dedicated broswer \cite{}. Note that this is similar to the apps-based approach of today.
+
+%ma2009beyond?
+
+%Research into proper metrics of anti-phishing effectiveness \cite{olivo2011obtaining}
+
+%LOOK AT CHI 2011 PAPER ON URL HIGHLIGHTING FOR RELEVANT SOURCES
+
+%in CHI 2011
+%1) phishing / user-oriented security methods: security toolbars and visual security indicator%s, example [3]; but still successful phishing attacks; [18] identified drawbacks (are not %noticed; did not care even they notice; mis-classified sites = mistrust in toolbar)
+%2) other visual methods equally inefficient lile lock icons [2,16]
+%3) non-technical people judge security primarily from the visual content of the page and its %relevance to their own task (9,6,4)
+%4) move security indicators into the user's filed of view (carefully to not reduce usability too much) and personalize them; if these are missing ore wrong --> user should suspect that he is on a phishing site [13]  //my comment: I am not sure this works as you can only see this once you logged in in a personalized manner and then it is too late
+
+% should say in addition to highlighting this is what people have done
+% say how ineffective games like phishing phil and training are
+
+% related work will say that other solutions have not worked
+
+%It's been long known that security systems mostly fail because of human factors and not because of technical issues \cite{fail}. One important contributor is the human-computer interface. Yee \cite{yee2005guidelines} proposed a set of guidelines for secure interaction design. Among these is the directive to give attackers as little control of trust interface elements as possible. This is what URL pruning partially achieves.
+
+%As noted previously, the primary imperative behind our proposal is helping users to protect themselves from  phishing attacks. 
+%The most obvious solution, preventing them from clicking on all and any links in messages is infeasible \cite{mohebzada2012phishing}, so it seems wise to find out whether we can   make it easier for the user  to discern the validity of   the URL so as to minimise deception success.
+%In the literature, various methods have been  striven to achieve this goal. More general foundational work that inspires our core understanding of how the challenges can be approached are:
+
+%\begin{itemize}
+%\item causes\\\cite{Dhamija:2006:WPW:1124772.1124861,scams,dns} % CHECK THESE
+%\emph{users don't understand}
+% AR: The causes of phising are missing user understanding, technical issues, missing motivation to check. We try to solve parts of the understanding problem, and trying to motivate users by making users having to check less things.
+
+%\item effects \cite{measuring, anderson2012measuring, moore2010hard}\\
+%\emph{simulated phishing \cite{mohebzada2012phishing,ethics}}
+% AR: Precise losses are hard to evaluate, and studies have ethical issues. We did not perform a real-live phishing experiment due to these concerns. Getting a solid monetary figure of the effect of our work will be difficult, but this also hold for other solutions.
+
+%\item processes \cite{searching,operandi}\\
+%\emph{summary}
+% AR: While phishers use various methods to support their operation, we are focussed on the front-end. However, work on disturbing the supporting processes is an important one, but not covered by our approach.
+
+%\item incentives \cite{externalities,profitless}\\
+%\emph{summary}
+%\end{itemize}
+% AR: From an economic viewpoint users should not be checking for phishing if it takes them too long. (This is where we can help with our method, i.e. making it shorter.) For phishingers, as more phishers start phishing we would expect the return to diminish due to market forces.
+
+%URL pruning seeks to negate one of the causes of phishing attacks, namely  poor awareness of  the dangers of phishing, and having to deal with complex and poorly understood technology. As shown above, it is not a solution that can stand on its own. It will need to be part of a comprehensive integrated solution, and will need to be continually re-evaluated given changing practices.
+% CHECK IN "CAUSES" REFERENCES WHETHER THIS MAKES SENSE (SEE ABOVE)
+
+%Besides an integrated approach, it is also important to keep up with the latest developments in attack channels and methodologies. This also goes for URL pruning. In order to keep up with both white and black hats, researchers will need to continually looking for new countermeasures as new attacks are discovered, as they inevitable will.
+
+%In developing these we can learn much from the fundamental research that has been done, as well as the practical arms race between attacks and defences. What is especially valuable are foundational findings, and attacks and defences that are close to the intervention being considered. For URL pruning the following research findings, and attacks and defences are relevant:
+% AR: They are all limited to a certain degree, and their application will be appropriate in different settings.
+
+% AR: How to add comparison to URL pruning?
+
+\begin{itemize}
+\item Address bar\\
+\emph{e.g. URL highlighting \cite{lin2007}}, \cite{Krammer:2006:PDA:1501434.1501473, gabrilovich2002homograph}, ? \cite{iphone}
+%AR: Address bar hiding has been studies and found to have an effect in certain scenarios. We have also found an effects in specific scenarios. Comparisons with this technique have been extensively discussed in prior sections.
+%AR: To fight against homomorphic URL attacks, differently coloured URLs have been tried. This may be an interesting extension of our proposal, although we will have to be careful with colour blind people.
+
+\item indicators\\
+\emph{visual fingerprints \cite{dhamija2005battle, visualisation},
+\cite{indicators}, misuse \cite{misuse}, \cite{emperor}, \cite{amrutkar2012measuring}}
+
+% AR: Visual fingerprints have been found to be easier to parse than textual fingerprints. This may be applicable to URLs as well. As mentioned in the previous point, our approach is vulnerable to textual mimicry and misspellings and the like. However, moving to a visual approach will make it difficult to apply very widely, although it is an interesting to avenue to consider. More research into textual mimicry is relevant to our proposal.
+
+% AR: Indicators have been found to be ignored by many users. The same may / does hold true for the URL bar. As such, methods have to be investigated to focus user attention where it is important. Given that our signal, the base domain name, does not depend on arbitrary locks or other metaphors, it may be more widely applicable.
+
+\item education\\
+\emph{teachable moments, educational games \cite{TUD-CS-2013-0167, kumaraguru2007protecting, alnajim2009antiphishing, embedded2011jansson, sheng2007antiphishingphil, intervention, 404,johnny}}
+%AR: Various educations methods have been tried, including both games and simulated phishing email. They have seen limited success. Our approach builds on not having to educate / having to only minimally educate users about the syntax of a domain name. This principle might be extended to other interface and interaction elements.
+
+\item warnings \cite{akhawe2013alice, warnings}
+%AR: [merge with indicators?] Warnings have been found to be ignored by users. Active warnings are less likely to be ignored but may upset users. More research into the trade-off between active and passive warnings seems valuable, and one such proposal relevant for our method could be briefly lighting up the URL bar on the visiting of new websites.
+
+\item Link evaluation, URL finding/prediction/analysis\\
+\emph{\cite{Bar-Yossef:2009:CDD:1462148.1462151,balzarotti2012proactive, prakash2010phishnet, zhang2008highly}, \cite{5934995, measurement}}
+% AR: The main problem with automated analysis is false positives and negatives.
+% AR: Related to our approach is the analysis of the full URL or parts of it. In principle this is automation of what a trained human could do. Unfortunately this approach would be hard to implement widely. When our approach would be widely applied we might see phishing URL patterns shift.
+% AR: Even though hard to implement universally, analysis of URL is valuable in that it can provide a second check for humans, who might miss things even if only presented with the base URL.
+
+\item add-ons, such as toolbars \cite{Wu:2006:STA:1124772.1124863, li2007usability, tools, toolbars}
+%AR: Various kinds of phishing toolbars are currently being used. They have issues around usabilty and standardisation. Our approach could be implemented as an add-on in many browsers, but would also be trivially implemented natively. Standardisation of the URL pruning technique and implementation across browsers is an open problem.
+
+\item trusted things/paths
+\emph{Work has only gone into the creation of trusted devices that can help proect agains phishing \cite{phoolproof,fido}, trusted links \cite{bookmarks}/ currently apps, supply chain \cite{router}}
+% AR: Created trusted paths between the system and the user is important in communicating security information. This was already mentioned in the context of Yee's \cite{yee2005guidelines} recommendations. Such a channel is important for our approach to work.
+% AR: When the system itself is not secure, which is not strange given the current state of code quality, alternative approaches that deal with the problem at lower system layers is necessary. Dedicated secure token are a solution for the problem but they are costly. Our approach wold only involve changes at the code level but would not protect the user when UI elements can be spoofed.
+
+\item automated analysis\\
+\emph{content analysis\cite{content}, visual distance \cite{chen2010detecting, chen2009fighting, liu2006antiphishing}, textual distance \cite{zhang2011textual}}
+\end{itemize}
+% AR: A countermeasure that has been proposed in comparing phishing websites with authentic websites, or with known phishing websites for deriving a classification score. While this is important work for phishing detection, it does have several problems, namely issues around anonymity, the need to port the approach to different platforms, and the mentioned accuracy of the approaches.
+
+As previously indicated, our URL pruning approach shares ideas with URL bar highlighting.
+%AR: Explain the difference between what we've done and other approaches
+
+% AR: Our solution is client-based, leaves the human to do the detection of phishing, and tries to approach the education and motivation problems by reducing what needs to be taught and checked. There are various areas that our approach does not cover, and as for most solutions, it will need to be combines with others for optimum protection. Promising candidates to support our approach are trusted interface elements to prevent URL spoofing, detection methods for suspicious URLs that are semantically or visually close to trusted URLs, and automated check at the infrastructure level for phishing websites.
+
+
+%MAYBE TO ADD TO INTRODUCTION:
+%A similar trial/preliminary study has been proposed and run by Renkema-Padmos et al \cite{renkema2014altchi}, but they did not get usable data due to problems with their methodology (running a survey on a crowdsourcing platform). We based our study on the materials that they made public \cite{renkema-padmos2014}.
+
+%=======================================================================
+%\section{Related Work} \label{backg2} % ARNE
+%=======================================================================
+
+% should say in addition to highlighting this is what people have done
+% say how ineffective games like phishing phil and training are
+
+% related work will say that other solutions have not worked
+It is widely known that security systems often fail because of human factors and not primarily because of technical issues \cite{fail}. One important contributor is the human-computer interface. Yee \cite{yee2005guidelines} proposed a set of guidelines for secure interaction design. Among these is the directive to give attackers as little control of trust interface elements as possible. This is what URL pruning strives to achieve.
+
+As noted previously, the primary imperative behind our proposal is helping users to protect themselves from  phishing attacks. 
+The most obvious solution, preventing them from clicking on all and any links in messages, is infeasible \cite{mohebzada2012phishing}, so it seems wise to find out whether we can   make it easier for the user  to discern the validity of   the URL so as to minimise deception success.
+%%%MOVE In the literature, various methods have been  proposed to achieve this goal. %More general foundational work that inspires our core understanding of how the challenges can be approached are:
+
+%\begin{itemize}
+%\item 
+%(1) causes \cite{Dhamija:2006:WPW:1124772.1124861,scams,dns} % CHECK THESE
+%i.e. \emph{users don't understand};
+% AR: The causes of phising are missing user understanding, technical issues, missing motivation to check. We try to solve parts of the understanding problem, and trying to motivate users by making users having to check less things.
+% \item 
+%(2) effects \cite{measuring, anderson2012measuring, moore2010hard} 
+%i.e. \emph{simulated phishing \cite{mohebzada2012phishing,ethics}};
+% AR: Precise losses are hard to evaluate, and studies have ethical issues. We did not perform a real-live phishing experiment due to these concerns. Getting a solid monetary figure of the effect of our work will be difficult, but this also hold for other solutions.
+%(3) 
+%\item 
+%processes \cite{searching,operandi}; 
+%???\emph{summary}
+% AR: While phishers use various methods to support their operation, we are focussed on the front-end. However, work on distuing the supporting processes is an important one, but not covered by our approach.
+%and (4) 
+%\item 
+%incentives \cite{externalities,profitless}. %\\
+%\emph{summary}
+%\end{itemize}
+% AR: From an economic viewpoint users should not be checking for phishing if it takes them too long. (This is where we can help with our method, i.e. making it shorter.) For phishingers, as more phishers start phishing we would expect the return to diminish due to market forces.
+
+
+
+%We can learn much from the fundamental research that has been done in this area, as well as from the effective arms race between attackers and defenders. 
+A range of proposals can be identified from the literature.
+Here we provide a non-exhaustive list in order to position URL pruning in the field. 
+%What is especially valuable are foundational findings, and attacks and defences that are close to the intervention being considered. For URL pruning the following research findings, and attacks and defences are relevant:
+% AR: They are all limited to a certain degree, and their application will be appropriate in different settings.
+
+{\bf Educational Pre-Use Approaches}:
+the approach here is to train the user to spot phishing attacks \cite{kumaraguru2007protecting, alnajim2009antiphishing, TUD-CS-2013-0167, embedded2011jansson, sheng2007antiphishingphil}. Educational approaches have limited success \cite{kirlappos2012security} because of users' confirmatory bias. 
+
+{\bf Passive Browser-Use Approaches}: these approaches seek to draw the user's attention to an important part of the interface. Address bar related approaches include:  URL highlighting \cite{lin2007,iphone} and visual fingerprints \cite{dhamija2005battle, visualisation}. These measures deliver some improvement, and URL pruning, detailed above, has attempted to improve this even more. 
+%\cite{indicators}
+
+{\bf Active Browser-Use Approaches}: warnings: \cite{akhawe2013alice, warnings}. 
+Warnings, like passive indicators, are not 100\% effective although they are capable of delivering improvement. 
+Add-ons such as toolbars have also been proposed \cite{li2007usability, tools, toolbars} but usability tests showed that users often disregarded toolbar warnings too. 
+
+{\bf Automatic Auto-Browser Blacklist}:  \cite{Bar-Yossef:2009:CDD:1462148.1462151,balzarotti2012proactive, prakash2010phishnet}. Some sophisticated mechanisms have been proposed in order to identify phishing websites. Unfortunately such a website would be a target for phishers themselves to compromise and it might be dangerous for users to start trusting a service that could be compromised. It seems better for users to be able to protect themselves. 
+
+%We do not claim that URL pruning is a total solution to the phishing problem, but we do believe that it can contribute to making users phish-resistant, if deployed as part of an integrated comprehensive solution which uses a variety of tools on multiple fronts. 
+
+URL pruning seeks to address one of the contributors to the successful phishing attacks: complex URLs.
+As our study shows, URL pruning cannot, in and of itself, achieve total amelioration.
+%poor awareness of  the dangers of phishing, and havinUR x nature of URLs. As our study shows, this is  not a solution that can stand on its own. 
+It will need to be part of a comprehensive integrated solution, and  be continually re-evaluated given changing phisher tactics.
+% CHECK IN "CAUSES" REFERENCES WHETHER THIS MAKES SENSE (SEE ABOVE)
+
+It is  important for any defensive mechanism to keep up with the latest developments in attack vectors and methodologies. This holds true for URL pruning. In order to keep up with both white and black hats, researchers will need to continually be looking for new and up to date countermeasures as the details of new attacks emerge, as they inevitably will.
+
+ 
+%AR: Address bar hiding has been studies and found to have an effect in certain scenarios. We have also found an effects in specific scenarios. Comparisons with this technique have been extensively discussed in prior sections.
+%AR: To fight against homomorphic URL attacks, differently coloured URLs have been tried. This may be an interesting extension of our proposal, although we will have to be careful with colour blind people.
+%and passive  indicators including visual fingerprints \cite{dhamija2005battle, visualisation},
+%\cite{indicators}, misuse \cite{misuse}, \cite{emperor}, \cite{amrutkar2012measuring}; 
+% AR: Visual fingerprints have been found to be easier to parse than textual fingerprints. This may be applicable to URLs as well. As mentioned in the previous point, our approach is vulnerable to textual mimicry and misspellings and the like. However, moving to a visual approach will make it difficult to apply very widely, although it is an interesting to avenue to consider. More research into textual mimicry is relevant to our proposal.
+% AR: Indicators have been found to be ignored by many users. The same may / does hold true for the URL bar. As such, methods have to be investigated to focus user attention where it is important. Given that our signal, the base domain name, does not depend on arbitrary locks or other metaphors, it may be more widely applicable.
+%arious educations methods such as teachable moments and educational games have been tried \cite{kumaraguru2007protecting, alnajim2009antiphishing, TUD-CS-2013-0167, embedded2011jansson, sheng2007antiphishingphil, intervention, 404,johnny}}; 
+%AR: Various educations methods have been tried, including both games and simulated phishing email. They have seen limited success. Our approach builds on not having to educate / having to only minimally educate users about the syntax of a domain name. This principle might be extended to other interface and interaction elements.
+
+%AR: [merge with indicators?] Warnings have been found to be ignored by users. Active warnings are less likely to be ignored but may upset users. More research into the trade-off between active and passive warnings seems valuable, and one such proposal relevant for our method could be briefly lighting up the URL bar on the visiting of new websites.
+%link evaluation, URL finding/prediction/analysis \emph{\cite{Bar-Yossef:2009:CDD:1462148.1462151,balzarotti2012proactive, prakash2010phishnet, zhang2008highly}, \cite{5934995, measurement}}; 
+% AR: The main problem with automated analysis is false positives and negatives.
+% AR: Related to our approach is the analysis of the full URL or parts of it. In principle this is automation of what a trained human could do. Unfortunately this approach would be hard to implement widely. When our approach would be widely applied we might see phishing URL patterns shift.
+% AR: Even though hard to implement universally, analysis of URL is valuable in that it can provide a second check for humans, who might miss things even if only presented with the base URL.
+%add-ons, such as toolbars \cite{Wu:2006:STA:1124772.1124863, li2007usability, tools, toolbars};
+%AR: Various kinds of phishing toolbars are currently being used. They have issues around usabilty and standardisation. Our approach could be implemented as an add-on in many browsers, but would also be trivially implemented natively. Standardisation of the URL pruning technique and implementation across browsers is an open problem.
+%trusted things/paths
+%\emph{Work has only gone into the creation of trusted devices that can help proect agains phishing 
+%\cite{phoolproof,fido}, trusted links \cite{bookmarks}/ currently apps, supply chain \cite{router}; %}
+% AR: Created trusted paths between the system and the user is important in communicating security information. This was already mentioned in the context of Yee's \cite{yee2005guidelines} recommendations. Such a channel is important for our approach to work.
+% AR: When the system itself is not secure, which is not strange given the current state of code quality, alternative approaches that deal with the problem at lower system layers is necessary. Dedicated secure token are a solution for the problem but they are costly. Our approach wold only involve changes at the code level but would not protect the user when UI elements can be spoofed.
+%and automated analysis including content analysis\cite{content}, visual distance \cite{chen2010detecting, chen2009fighting, liu2006antiphishing}, and textual distance \cite{zhang2011textual}
+
+
+
+% AR: How to add comparison to URL pruning?
+\begin{comment}
+\begin{itemize}
+\item Address bar\\
+\emph{e.g. URL highlighting \cite{lin2007}}, \cite{Krammer:2006:PDA:1501434.1501473, gabrilovich2002homograph}, ? \cite{iphone}
+%AR: Address bar hiding has been studies and found to have an effect in certain scenarios. We have also found an effects in specific scenarios. Comparisons with this technique have been extensively discussed in prior sections.
+%AR: To fight against homomorphic URL attacks, differently coloured URLs have been tried. This may be an interesting extension of our proposal, although we will have to be careful with colour blind people.
+
+\item indicators\\
+\emph{visual fingerprints \cite{dhamija2005battle, visualisation},
+\cite{indicators}, misuse \cite{misuse}, \cite{emperor}, \cite{amrutkar2012measuring}}
+
+% AR: Visual fingerprints have been found to be easier to parse than textual fingerprints. This may be applicable to URLs as well. As mentioned in the previous point, our approach is vulnerable to textual mimicry and misspellings and the like. However, moving to a visual approach will make it difficult to apply very widely, although it is an interesting to avenue to consider. More research into textual mimicry is relevant to our proposal.
+
+% AR: Indicators have been found to be ignored by many users. The same may / does hold true for the URL bar. As such, methods have to be investigated to focus user attention where it is important. Given that our signal, the base domain name, does not depend on arbitrary locks or other metaphors, it may be more widely applicable.
+
+\item education\\
+\emph{teachable moments, educational games \cite{TUD-CS-2013-0167, kumaraguru2007protecting, alnajim2009antiphishing, embedded2011jansson, sheng2007antiphishingphil, intervention, 404,johnny}}
+%AR: Various educations methods have been tried, including both games and simulated phishing email. They have seen limited success. Our approach builds on not having to educate / having to only minimally educate users about the syntax of a domain name. This principle might be extended to other interface and interaction elements.
+
+\item warnings \cite{akhawe2013alice, warnings}
+%AR: [merge with indicators?] Warnings have been found to be ignored by users. Active warnings are less likely to be ignored but may upset users. More research into the trade-off between active and passive warnings seems valuable, and one such proposal relevant for our method could be briefly lighting up the URL bar on the visiting of new websites.
+
+\item Link evaluation, URL finding/prediction/analysis\\
+\emph{\cite{Bar-Yossef:2009:CDD:1462148.1462151,balzarotti2012proactive, prakash2010phishnet, zhang2008highly}, \cite{5934995, measurement}}
+% AR: The main problem with automated analysis is false positives and negatives.
+% AR: Related to our approach is the analysis of the full URL or parts of it. In principle this is automation of what a trained human could do. Unfortunately this approach would be hard to implement widely. When our approach would be widely applied we might see phishing URL patterns shift.
+% AR: Even though hard to implement universally, analysis of URL is valuable in that it can provide a second check for humans, who might miss things even if only presented with the base URL.
+
+\item add-ons, such as toolbars \cite{Wu:2006:STA:1124772.1124863, li2007usability, tools, toolbars}
+%AR: Various kinds of phishing toolbars are currently being used. They have issues around usabilty and standardisation. Our approach could be implemented as an add-on in many browsers, but would also be trivially implemented natively. Standardisation of the URL pruning technique and implementation across browsers is an open problem.
+
+\item trusted things/paths
+\emph{Work has only gone into the creation of trusted devices that can help proect agains phishing \cite{phoolproof,fido}, trusted links \cite{bookmarks}/ currently apps, supply chain \cite{router}}
+% AR: Created trusted paths between the system and the user is important in communicating security information. This was already mentioned in the context of Yee's \cite{yee2005guidelines} recommendations. Such a channel is important for our approach to work.
+% AR: When the system itself is not secure, which is not strange given the current state of code quality, alternative approaches that deal with the problem at lower system layers is necessary. Dedicated secure token are a solution for the problem but they are costly. Our approach wold only involve changes at the code level but would not protect the user when UI elements can be spoofed.
+
+\item automated analysis\\
+\emph{content analysis\cite{content}, visual distance \cite{chen2010detecting, chen2009fighting, liu2006antiphishing}, textual distance \cite{zhang2011textual}}
+\end{itemize}
+% AR: A countermeasure that has been proposed in comparing phishing websites with authentic websites, or with known phishing websites for deriving a classification score. While this is important work for phishing detection, it does have several problems, namely issues around anonymity, the need to port the approach to different platforms, and the mentioned accuracy of the approaches.
+\end{comment}
+%As previously indicated, our URL pruning approach shares ideas with URL bar highlighting.
+%AR: Explain the difference between what we've done and other approaches
+
+% AR: Our solution is client-based, leaves the human to do the detection of phishing, and tries to approach the education and motivation problems by reducing what needs to be taught and checked. There are various areas that our approach does not cover, and as for most solutions, it will need to be combines with others for optimum protection. Promising candidates to support our approach are trusted interface elements to prevent URL spoofing, detection methods for suspicious URLs that are semantically or visually close to trusted URLs, and automated check at the infrastructure level for phishing websites.
+
+% AR
+% May also be relevant"
+% "That means the lack of usability in the security interface is not a bug, it is a feature. It is most probably and at the very basis the expression of unwillingness of the entire TLS system to stand in for their assertions."
+% https://www.w3.org/2014/strint/papers/52.pdf
+
+
+%MAYBE TO ADD TO INTRODUCTION:
+%A similar trial/preliminary study has been proposed and run by Renkema-Padmos et al \cite{renkema2014altchi}, but they did not get usable data due to problems with their methodology (running a survey on a crowdsourcing platform). We based our study on the materials that they made public \cite{renkema-padmos2014}.

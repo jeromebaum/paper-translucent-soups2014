@@ -1,0 +1,107 @@
+% RESULTS AFTER SURVEY FINISHED, NUMBERS OBTAINED FROM GOOGLE
+% NOTE: ONLY VALID IF WE FIND THAT WE DO NOT HAVE DUPLICATES!
+
+% tag: heeeero
+
+% ---------------------------------------------
+2014-03-03 Image Categorization ba
+% ---------------------------------------------
+
+Yes 208
+No  242
+NH  53
+
+Corrected:
+Yes 155
+No  189
+
+Proportion:
+
+Odds: 0.82 %0.820
+Y/N
+
+% ---------------------------------------------
+2014-03-03 Image Categorization bc
+% ---------------------------------------------
+
+Yes 151
+No  301
+NH  49
+
+Corrected:
+Yes 102
+No  252
+
+Proportion:
+
+Odds: 0.41 %0.405
+
+% ---------------------------------------------
+2014-03-03 Image Categorization bp
+% ---------------------------------------------
+
+Yes 153
+No  296
+NH  51
+
+Corrected:
+Yes 102
+No  245
+
+Proportion:
+
+Odds: 0.42 %0.416
+
+% ---------------------------------------------
+2014-03-03 Image Categorization ga
+% ---------------------------------------------
+
+Yes 286
+No  152
+NH  62
+
+Proportion:
+
+Corrected:
+Yes 224
+No  90
+
+Odds: 2.5 %2.489
+
+% ---------------------------------------------
+PRELIMINARY
+% ---------------------------------------------
+
+TO BE UPDATED OPEN
+
+Yes 190
+No  238
+NH  63
+
+Proportion:
+
+Corrected:
+Yes 127
+No  175
+
+Odds: 0.73 %0.7257
+
+TO BE UPDATED CLOSE
+
+% ---------------------------------------------
+2014-03-03 Image Categorization gp
+% ---------------------------------------------
+
+Yes 182
+No  261
+NH  58
+
+Proportion:
+
+Corrected:
+Yes 124
+No  203
+
+Odds: 0.61 % 0.6108
+
+% ======================

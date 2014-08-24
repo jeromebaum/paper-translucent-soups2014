@@ -1,0 +1,39 @@
+“The first principle is that you must not fool yourself and you are the easiest person to fool.”
+― Richard P. Feynman
+
+%\mbox{}\\\noindent\emph{Printing should be invisible.} --- Beatrice Warde % TO DO: clarification in text body
+%\mbox{}\\\noindent\emph{By the way, Kitty, if only you'd been really with me in my dream, there was one thing you would have enjoyed——I had such a quantity of poetry said to me, all about fishes!} --- Through the Looking-Glass, Beatrice Warde
+
+%\mbox{}\\\noindent\emph{One man's transparency is another's humiliation.} --- Gerry Adams % AN ALTERNATIVE
+
+%\mbox{}\\\noindent\emph{The type that, through any arbitrary warping of design or excess of ``color," get in the way of the mental picture to be conveyed, is a bad type.} --- Beatrice Warde
+% "get in the way" is the "get" [sic]?
+
+
+
+% Feedback from AR to JB:
+% - Don't \cite twice, use author's name.
+% - Try to rephrase unless direct citation is important.
+% - Reduce commas where possible.
+
+% ========================================
+% ^^^ above here is actual text
+% ========================================
+==> DIVIDER DIVIDER DIVIDER <==
+% ========================================
+% vvv below here are just notes
+% ========================================
+
+Hypothesis 1: The green background makes participants more likely to fall for a phishing attack. That is, we expected more positive responses in the ``fraud with green bar'' group compared with the ``fraud without green bar'' group.
+
+Hypothesis 2: compare fraud with green bar to authentic with ev-ssl
+
+Hypothesis 3: compare authentic with ev-ssl with fraud without green bar
+
+
+
+We are interested in comparing the effectiveness of the phishing attacks. Call $X_{green}^{(j)} = $ ``the $j$-th participant who was shown a green-bar screenshot has answered that they trust the website'' and similarly for $X_{t}^{(j)}$ with $t$ from ``authentic'', ``green'' and ``plain.'' Define $D_{green}^{(j)} = $ ``the $j$-th participant was shown a green-bar screenshot'' and $D_{t}^{(j)}$, then $D_{t}^{(j)}\stackrel{i.i.d.}{\sim}B(1,{1\over 3})$ for each $t$. We reasonably assume that $X_{t}^{(j)}\stackrel{i.i.d.}{\sim}B(1,p_{t})$ for each $t$.
+
+The relative effectiveness of each attack is covered by six trivial hypotheses: $H_{1,t,t',<} := \{p_{t} < p_{t'}\}, t\neq t'$. The respective null hypotheses are then: $H_{0,t,t',\ge} := \{p_{t}\ge p_{t'}\}$. So $H_{1,t,t',<}$ means intuitively ``the screenshot type $t'$ is more trustworthy than the type $t$'' and when $t'$ is an attack ``the attack $t'$ is more effective than $t$'' resp. ``the attack $t'$ is unrecognized'' when $t = $ ``authentic''. $t'$ can also be ``authentic'', in which case ``the attack $t$ is detected by users.''
+
+We test 6 hypotheses for .....

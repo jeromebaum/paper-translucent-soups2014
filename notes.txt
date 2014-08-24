@@ -1,0 +1,124 @@
+
+
+
+Budget (no. of Google responses, each a single question):
+* 1x500 (plus more)
+* 6x100 (if interesting enough)
+
+Possibly question types that involve images:
+* 2-5 images: Pick from up to 5 images
+* 1 image: Likert scale
+* 1 image: Answer pick
+* 1 image: Free-text
+
+Value of 500 questions
+--> mostly for heavy stats (when binary)
+--> makes sense for something that can extend current data
+
+Value of 100 questions
+--> exploratory kind of stuff
+--> non-binary (likert) --> likert hard to analyse (properly)?
+
+
+========================================
+Candidates for the 500 response survey
+Before tomorrow
+========================================
+
+DONE interesting ones:
+DONE try testing with question "Is this website safe?" for any of the ones we've already done
+
+
+Variables: padlock yes/no, extended validation yes/no, authentic website yes/no, colour hex, size of highlight large/small, website google/bofa/etc
+
+extended validation --> probably not as good to test?
+
+google.com
+gmailphish.com
+
+boa.com
+boaphish.com
+
+green background
+non-green background
+
+we have:
+google.phishcom+green-background
+google.phishcom+non-green-background
+gmailphish.com+non-green-background
+
+^ option 1: close this
+
+option 2: have google.phishcom+something else, e.g. adding lock
+
+1st: gmail
+
+RE site to use: gmail probably best, as we won't actually have 500 by tomorrow and gmail is lower atm.
+
+
+* Green version of authentic: Bank of America and Google, or only one
+Requires more than 100 (e.g. the 500, maybe 200 or 250 are enough)
+==> PRO: closes the correct-url non-correct url plus green non-green space
+         might give some info about it serving as a warning / notification
+==> CON: needs lots of data points
+         harder to produce
+
+* Differently coloured URL bar, e.g. red to check if the effect is greater salience / the url bar being different
+Maybe a neutral color like blue then.
+* Blue, red
+(maybe blue, red, green, none?)
+==> PRO: provides different (sub-)axis/answers another question
+         almost ready to run
+==> CON:
+
+* URL with smaller highlighting
+==> PRO:
+==> CON: this feels like a desperate attempt instead of trying to complete dataset/answer more questions
+
+* Authentic without padlock
+==> PRO: another variable
+
+* phishing with padlock (w/ or w/out green)
+Green doesn't really make sense because we don't learn a lot. So w/out color.
+==> PRO:
+==> CON:
+
+========================================
+Possible surveys to run before tomorrow
+========================================
+
+* verification questions to check the presence of bots / look at how seriously people answer the questions
+e.g. to collect background noise for likert scale or binary scale
+
+* verification for uniform distribution of bot answers on randomized answer order
+How do we make sure only bots answer?
+Have several answers that read correctly but in the question say to pick a separate one
+e.g. "Please pick ``I'm not a human''" ?
+
+* Freetext (then summarize using edit distance), see how many say "fraud" etc.
+First on green, then if results are interesting (i.e. not all "google") then also plain.
+Try to phrase question so people don't all say "google" "email" etc.
+==> PRO: qualitative
+==> CON: harder to analyse
+
+* Likert scale on plain and green.
+==> PRO:
+==> CON:
+
+* Pick: "safe", "fast", "useful", "simple", ... for green and plain
+Then compare how many picked "safe"
+==> PRO:
+==> CON:
+
+========================================
+Future work:
+========================================
+
+Hiding misspellings
+
+Create a test suite for different crowdsourcing platforms to automatically check for validity. This could involve trying to reproduce findings that have been previously found. We have to be careful in such a case however, because we don't want to bias our choice of platforms to only those where previous findings correspond with current findings.
+
+Look into general methodology for finding background noise.
+
+
+
