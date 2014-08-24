@@ -493,6 +493,8 @@ $\sum$               & 25       & 30            & 55 \\
 
 We tested the null hypotheses that there is pairwise no difference in trustworthiness. To do this we totalled the data over the sites Google Mail and Bank of America. We then ran Fisher's exact test and applied a Bonferri correction (factor 3) to account for family-wise error. The two-tailed p-values are summarized in Table \ref{fig:results:pvalues}.
 
+The tests we used are simplified in that they ignore the possible variation in results due to bot noise.
+
 By making additional assumptions on the Google Consumer Survey responses we were able to apply a correction to account for the bot responses. Specifically we assumed that bots (and unattentive human participants) chose at random between the possibilities. That is, bot responses are distributed i.i.d. $\mathcal U\{Y,N,\varepsilon\}$ where $\mathcal U$ is the uniform distribution.
 
 % maybe add something about the noise floor not being clear, i.e. we don't know if spammers and non-serious people click on one thing more than others. however, the problem should be reduced because we randomised order of questions.
